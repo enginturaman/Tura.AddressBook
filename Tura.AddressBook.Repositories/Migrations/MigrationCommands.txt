@@ -1,5 +1,8 @@
 ﻿update-database
-add migration
+add-migration
 remove-migration
 script-migration
-defaultValueSql: "newId()"
+defaultValueSql: "uuid_generate_v1()"
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+SELECT uuid_generate_v1()
