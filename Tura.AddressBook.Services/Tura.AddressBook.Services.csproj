@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tura.AddressBook.Infrastructures\Tura.AddressBook.Infrastructures.csproj" />
+    <ProjectReference Include="..\Tura.AddressBook.Interfaces\Tura.AddressBook.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

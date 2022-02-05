@@ -1,0 +1,5 @@
+﻿update-database
+add migration
+remove-migration
+script-migration
+defaultValueSql: "newId()"
