@@ -48,7 +48,7 @@ namespace Tura.AddressBook.Repositories
 
         public async Task<Guid?> Post(PersonalDmo entity)
         {
-            var isExists = _context.Personals.Any(x => x.Name == entity.Name && x.SurName == entity.SurName && !x.Deleted);
+            var isExists = _context.Personals.Any(x => x.Name == entity.Name && x.LastName == entity.LastName && !x.Deleted);
 
             if (isExists)
             {
@@ -72,8 +72,8 @@ namespace Tura.AddressBook.Repositories
             }
 
             entity.Name = model.Name;
-            entity.SurName = model.SurName;
-            entity.Company = model.Company;
+            entity.LastName = model.LastName;
+            entity.Firm = model.Firm;
             entity.UpdatedDate = DateTime.Now;
 
 

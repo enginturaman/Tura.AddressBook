@@ -30,9 +30,9 @@ namespace Tura.AddressBook.Services
                 .Select(x => new PersonalModel
                 {
                     Name = x.Name,
-                    Company = x.Company,
+                    Firm = x.Firm,
                     Id = x.Id,
-                    SurName = x.SurName,
+                    LastName = x.LastName,
                 });
         }
 
@@ -48,9 +48,9 @@ namespace Tura.AddressBook.Services
             return new PersonalDetailModel
             {
                 Name = entity.Name,
-                Company = entity.Company,
+                Firm = entity.Firm,
                 Id = entity.Id,
-                SurName = entity.SurName,
+                LastName = entity.LastName,
                 Contacts = entity.Contacts.Select(t => new PersonalContactModel
                 {
                     Id = t.Id,
@@ -74,8 +74,8 @@ namespace Tura.AddressBook.Services
             {
                 Id = Guid.NewGuid(),
                 Name = model.Name,
-                SurName = model.SurName,
-                Company = model.Company,
+                LastName = model.LastName,
+                Firm = model.Firm,
                 Deleted = false,
                 CreatedDate = DateTime.Now,
             };

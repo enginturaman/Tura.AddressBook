@@ -21,8 +21,8 @@ namespace Tura.AddressBook.UnitTest
         {
             _mockService = new Mock<IPersonalService>();
             _controller = new PersonalsController(_mockService.Object);
-            personals = new List<PersonalModel>() { new PersonalModel {  Company = "Test Firması" , Name = "Engin" , SurName = "Turaman"  },
-            new PersonalModel { Company = "Test Firması 2" , Name = "Ahmet" , SurName = "Talha" }};
+            personals = new List<PersonalModel>() { new PersonalModel { Id = new Guid( "49f8b087-bdb1-473e-ab79-1ff887b669af" ),  Firm = "Test Firması" , Name = "Engin" , LastName = "Turaman"  },
+            new PersonalModel {  Id = new Guid( "0224604c-0e43-4ca2-87bb-ca2955ae1907" ) , Firm = "Test Firması 2" , Name = "Ahmet" , LastName = "Talha" }};
         }
 
 
@@ -53,35 +53,42 @@ namespace Tura.AddressBook.UnitTest
             Assert.IsType<NotFoundResult>(result);
         }
 
-        //[Theory]
-        //[InlineData(1)]
-        //[InlineData(2)]
-        //public async void GetPersonal_IdValid_ReturnOkResult(int PersonalId)
-        //{
-        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        [InlineData("49f8b087-bdb1-473e-ab79-1ff887b669af")]
+        public void GetPersonal_IdValid_ReturnOkResult(Guid personalId)
+        {
+            var personalDeteil = personals
+                .Select(x => new PersonalDetailModel
+                {
+                    Id = x.Id,
+                    Firm = x.Firm,
+                    LastName = x.LastName,
+                    Name = x.Name,
+                })
+                .First(x => x.Id == personalId);
 
-        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
+            _mockService.Setup(x => x.GetById(personalId)).Returns(personalDeteil);
 
-        //    var result = await _controller.GetPersonal(PersonalId);
+            var result = _controller.GetById(personalId);
 
-        //    var okResult = Assert.IsType<OkObjectResult>(result);
+            var okResult = Assert.IsType<OkObjectResult>(result);
 
-        //    var returnPersonalModel = Assert.IsType<Personal>(okResult.Value);
+            var returnPersonalModel = Assert.IsType<PersonalDetailModel>(okResult.Value);
 
-        //    Assert.Equal(PersonalId, returnPersonal.Id);
-        //    Assert.Equal(Personal.Name, returnPersonal.Name);
-        //}
+            Assert.Equal(personalId, returnPersonalModel.Id);
+        }
 
-        //[Theory]
-        //[InlineData(1)]
-        //public void PutPersonal_IdIsNotEqualPersonal_ReturnBadRequestResult(int PersonalId)
-        //{
-        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        public void PutPersonal_IdIsNotEqualPersonal_ReturnBadRequestResult(Guid personalId)
+        {
+            var personel = personals.First(x => x.Id == personalId);
 
-        //    var result = _controller.PutPersonal(2, Personal);
+            var result = _controller.Put(new Guid("abcdb087-bdb1-473e-ab79-1ff887b669af"), personel);
 
-        //    var badRequestResult = Assert.IsType<BadRequestResult>(result);
-        //}
+            var badRequestResult = Assert.IsType<BadRequestResult>(result);
+        }
 
         //[Theory]
         //[InlineData(1)]

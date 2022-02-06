@@ -33,4 +33,6 @@
     <ProjectReference Include="..\Tura.AddressBook.Services\Tura.AddressBook.Services.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/azure-deviceupdate-import-manifest-4.0.json" /></VisualStudio></ProjectExtensions>
+
 </Project>

@@ -34,7 +34,7 @@ namespace Tura.AddressBook.Api.Controllers
         {
             var result = _personalService.GetById(id);
 
-            if(result == null)
+            if (result == null)
             {
                 return NotFound();
             }
@@ -51,17 +51,23 @@ namespace Tura.AddressBook.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] PersonalModel model)
+        public IActionResult Put(Guid id, [FromBody] PersonalModel model)
         {
-
+            if (model == null || id != model.Id)
+            {
+                return BadRequest();
+            }
             _personalService.Put(id, model);
+
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public IActionResult Delete(Guid id)
         {
             _personalService.Delete(id);
 
+            return Ok();
         }
     }
 }
