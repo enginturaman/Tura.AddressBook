@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tura.AddressBook.Api.Controllers;
 using Tura.AddressBook.Domain.Models;
+using Tura.AddressBook.Infrastructures.Exceptions;
 using Tura.AddressBook.Services.Interfaces.Services;
 using Xunit;
 
@@ -33,109 +35,109 @@ namespace Tura.AddressBook.UnitTest
 
             var okResult = Assert.IsType<OkObjectResult>(result);
 
-            var returnProducts = Assert.IsAssignableFrom<IEnumerable<PersonalModel>>(okResult.Value);
+            var returnPersonals = Assert.IsAssignableFrom<IEnumerable<PersonalModel>>(okResult.Value);
 
-            Assert.Equal<int>(2, returnProducts.ToList().Count);
+            Assert.Equal<int>(2, returnPersonals.ToList().Count);
         }
 
-        //[Theory]
-        //[InlineData(0)]
-        //public async void GetProduct_IdInValid_ReturnNotFound(int productId)
-        //{
-        //    Product product = null;
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        public void GetPersonal_IdInValid_ReturnNotFound(Guid personalId)
+        {
+            PersonalDetailModel personalModel = null;
 
-        //    _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+            _mockService.Setup(x => x.GetById(personalId)).Returns(personalModel);
 
-        //    var result = await _controller.GetProduct(productId);
+            var result = _controller.GetById(personalId);
 
-        //    Assert.IsType<NotFoundResult>(result);
-        //}
+            Assert.IsType<NotFoundResult>(result);
+        }
 
         //[Theory]
         //[InlineData(1)]
         //[InlineData(2)]
-        //public async void GetProduct_IdValid_ReturnOkResult(int productId)
+        //public async void GetPersonal_IdValid_ReturnOkResult(int PersonalId)
         //{
-        //    var product = personals.First(x => x.Id == productId);
+        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
 
-        //    _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
 
-        //    var result = await _controller.GetProduct(productId);
+        //    var result = await _controller.GetPersonal(PersonalId);
 
         //    var okResult = Assert.IsType<OkObjectResult>(result);
 
-        //    var returnProduct = Assert.IsType<Product>(okResult.Value);
+        //    var returnPersonalModel = Assert.IsType<Personal>(okResult.Value);
 
-        //    Assert.Equal(productId, returnProduct.Id);
-        //    Assert.Equal(product.Name, returnProduct.Name);
+        //    Assert.Equal(PersonalId, returnPersonal.Id);
+        //    Assert.Equal(Personal.Name, returnPersonal.Name);
         //}
 
         //[Theory]
         //[InlineData(1)]
-        //public void PutProduct_IdIsNotEqualProduct_ReturnBadRequestResult(int productId)
+        //public void PutPersonal_IdIsNotEqualPersonal_ReturnBadRequestResult(int PersonalId)
         //{
-        //    var product = personals.First(x => x.Id == productId);
+        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
 
-        //    var result = _controller.PutProduct(2, product);
+        //    var result = _controller.PutPersonal(2, Personal);
 
         //    var badRequestResult = Assert.IsType<BadRequestResult>(result);
         //}
 
         //[Theory]
         //[InlineData(1)]
-        //public void PutProduct_ActionExecutes_ReturnNoContent(int productId)
+        //public void PutPersonal_ActionExecutes_ReturnNoContent(int PersonalId)
         //{
-        //    var product = personals.First(x => x.Id == productId);
+        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
 
-        //    _mockService.Setup(x => x.Update(product));
+        //    _mockService.Setup(x => x.Update(Personal));
 
-        //    var result = _controller.PutProduct(productId, product);
+        //    var result = _controller.PutPersonal(PersonalId, Personal);
 
-        //    _mockService.Verify(x => x.Update(product), Times.Once);
+        //    _mockService.Verify(x => x.Update(Personal), Times.Once);
 
         //    Assert.IsType<NoContentResult>(result);
         //}
 
         //[Fact]
-        //public async void PostProduct_ActionExecutes_ReturnCreatedAtAction()
+        //public async void PostPersonal_ActionExecutes_ReturnCreatedAtAction()
         //{
-        //    var product = personals.First();
+        //    var PersonalModel = personals.First();
 
-        //    _mockService.Setup(x => x.Create(product)).Returns(Task.CompletedTask);
+        //    _mockService.Setup(x => x.Create(Personal)).Returns(Task.CompletedTask);
 
-        //    var result = await _controller.PostProduct(product);
+        //    var result = await _controller.PostPersonal(Personal);
 
         //    var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
 
-        //    _mockService.Verify(x => x.Create(product), Times.Once);
+        //    _mockService.Verify(x => x.Create(Personal), Times.Once);
 
-        //    Assert.Equal("GetProduct", createdAtActionResult.ActionName);
+        //    Assert.Equal("GetPersonal", createdAtActionResult.ActionName);
         //}
 
         //[Theory]
         //[InlineData(0)]
-        //public async void DeleteProduct_IdInValid_ReturnNotFound(int productId)
+        //public async void DeletePersonal_IdInValid_ReturnNotFound(int PersonalId)
         //{
-        //    Product product = null;
+        //    PersonalModel PersonalModel = null;
 
-        //    _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
+        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
 
-        //    var resultNotFound = await _controller.DeleteProduct(productId);
+        //    var resultNotFound = await _controller.DeletePersonal(PersonalId);
 
         //    Assert.IsType<NotFoundResult>(resultNotFound.Result);
         //}
 
         //[Theory]
         //[InlineData(1)]
-        //public async void DeleteProduct_ActionExecute_ReturnNoContent(int productId)
+        //public async void DeletePersonal_ActionExecute_ReturnNoContent(int PersonalId)
         //{
-        //    var product = personals.First(x => x.Id == productId);
-        //    _mockService.Setup(x => x.GetById(productId)).ReturnsAsync(product);
-        //    _mockService.Setup(x => x.Delete(product));
+        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
+        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
+        //    _mockService.Setup(x => x.Delete(Personal));
 
-        //    var noContentResult = await _controller.DeleteProduct(productId);
+        //    var noContentResult = await _controller.DeletePersonal(PersonalId);
 
-        //    _mockService.Verify(x => x.Delete(product), Times.Once);
+        //    _mockService.Verify(x => x.Delete(Personal), Times.Once);
 
         //    Assert.IsType<NoContentResult>(noContentResult.Result);
         //}

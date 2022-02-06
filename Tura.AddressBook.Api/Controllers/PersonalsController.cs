@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tura.AddressBook.Domain.Models;
 using Tura.AddressBook.Services.Interfaces.Services;
@@ -20,24 +20,27 @@ namespace Tura.AddressBook.Api.Controllers
             _personalService = personalService;
         }
 
-        // GET: api/<PersonalsController>
         [HttpGet]
-        public Task<IActionResult> Get()
+        public IActionResult Get()
         {
+            Log.Information("Test MongoDB Information Log");
             var result = _personalService.Get();
 
             return Ok(result);
         }
 
-        // GET api/<PersonalsController>/5
         [HttpGet("{id}")]
-        public Task<IActionResult> Get(Guid id)
+        public IActionResult GetById(Guid id)
         {
             var result = _personalService.GetById(id);
 
+            if(result == null)
+            {
+                return NotFound();
+            }
+
             return Ok(result);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PersonalModel model)
@@ -47,7 +50,6 @@ namespace Tura.AddressBook.Api.Controllers
             return Ok(result);
         }
 
-        // PUT api/<PersonalsController>/5
         [HttpPut("{id}")]
         public void Put(Guid id, [FromBody] PersonalModel model)
         {
@@ -55,7 +57,6 @@ namespace Tura.AddressBook.Api.Controllers
             _personalService.Put(id, model);
         }
 
-        // DELETE api/<PersonalsController>/5
         [HttpDelete("{id}")]
         public void Delete(Guid id)
         {
