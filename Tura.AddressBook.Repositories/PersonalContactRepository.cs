@@ -79,7 +79,7 @@ namespace Tura.AddressBook.Repositories
 
             if (isExists)
             {
-                throw new FoundException("Konum bilgisi bu kişiye daha önce tanımlanmış.", "RecordIsFound");
+                throw new FoundException("The location information has been previously defined to this person.", "RecordIsFound");
             }
 
             var entity = new PersonalContactDmo

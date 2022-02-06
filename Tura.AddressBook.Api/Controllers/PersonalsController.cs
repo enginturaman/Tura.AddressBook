@@ -22,20 +22,20 @@ namespace Tura.AddressBook.Api.Controllers
 
         // GET: api/<PersonalsController>
         [HttpGet]
-        public IEnumerable<PersonalModel> Get()
+        public Task<IActionResult> Get()
         {
-            IEnumerable<PersonalModel> result = _personalService.Get();
+            var result = _personalService.Get();
 
-            return result;
+            return Ok(result);
         }
 
         // GET api/<PersonalsController>/5
         [HttpGet("{id}")]
-        public PersonalDetailModel Get(Guid id)
+        public Task<IActionResult> Get(Guid id)
         {
-            PersonalDetailModel retval = _personalService.GetById(id);
+            var result = _personalService.GetById(id);
 
-            return retval;
+            return Ok(result);
         }
 
 

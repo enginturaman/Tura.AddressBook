@@ -29,7 +29,7 @@ namespace Tura.AddressBook.Repositories
                 {
                     if (response.Result.StatusCode != System.Net.HttpStatusCode.OK)
                     {
-                        throw new Exception($"SendReport - RMQ Api Servis Hatası : {JsonConvert.SerializeObject(response.Result.Content)}");
+                        throw new Exception($"SendReport - RMQ Api Service Error : {JsonConvert.SerializeObject(response.Result.Content)}");
                     }
                 }
             }

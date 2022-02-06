@@ -25,7 +25,7 @@ namespace Tura.AddressBook.Repositories
 
             if (entity == null)
             {
-                throw new NotFoundException("Kullanıcı bilgisi mevcut degil", "RecordNotFound");
+                throw new NotFoundException("Location record is not found", "RecordNotFound");
             }
 
             entity.Deleted = true;
