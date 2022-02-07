@@ -11,7 +11,7 @@ namespace Tura.AddressBook.Services.Interfaces.Services
         PersonalDetailModel GetById(Guid id);
         Task<Guid?> Post(PersonalModel model);
         void Put(Guid id, PersonalModel model);
-        void Delete(Guid id);
+        Guid? Delete(Guid id);
     }
 }
 

@@ -3,6 +3,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Tura.AddressBook.Api.Controllers;
 using Tura.AddressBook.Domain.Models;
 using Tura.AddressBook.Infrastructures.Exceptions;
@@ -90,63 +91,70 @@ namespace Tura.AddressBook.UnitTest
             var badRequestResult = Assert.IsType<BadRequestResult>(result);
         }
 
-        //[Theory]
-        //[InlineData(1)]
-        //public void PutPersonal_ActionExecutes_ReturnNoContent(int PersonalId)
-        //{
-        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        public void PutPersonal_ActionExecutes_ReturnOkResult(Guid personelId)
+        {
+            var personal = personals.First(x => x.Id == personelId);
 
-        //    _mockService.Setup(x => x.Update(Personal));
+            _mockService.Setup(x => x.Put(personelId , personal));
 
-        //    var result = _controller.PutPersonal(PersonalId, Personal);
+            var result = _controller.Put(personelId, personal);
 
-        //    _mockService.Verify(x => x.Update(Personal), Times.Once);
+            _mockService.Verify(x => x.Put(personelId , personal), Times.Once);
 
-        //    Assert.IsType<NoContentResult>(result);
-        //}
+            Assert.IsType<OkResult>(result);
+        }
 
-        //[Fact]
-        //public async void PostPersonal_ActionExecutes_ReturnCreatedAtAction()
-        //{
-        //    var PersonalModel = personals.First();
+        [Fact]
+        public async void PostPersonal_ActionExecutes_ReturnCreatedAtAction()
+        {
+            var personal = personals.First();
 
-        //    _mockService.Setup(x => x.Create(Personal)).Returns(Task.CompletedTask);
+            _mockService.Setup(x => x.Post(personal));
 
-        //    var result = await _controller.PostPersonal(Personal);
+            var result = await _controller.Post(personal);
 
-        //    var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
 
-        //    _mockService.Verify(x => x.Create(Personal), Times.Once);
+            _mockService.Verify(x => x.Post(personal), Times.Once);
 
-        //    Assert.Equal("GetPersonal", createdAtActionResult.ActionName);
-        //}
+            Assert.Equal("Get", createdAtActionResult.ActionName);
+        }
 
-        //[Theory]
-        //[InlineData(0)]
-        //public async void DeletePersonal_IdInValid_ReturnNotFound(int PersonalId)
-        //{
-        //    PersonalModel PersonalModel = null;
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        public void DeletePersonal_IdInValid_ReturnNotFound(Guid personalId)
+        {
+            PersonalDetailModel personal = null;
 
-        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
+            _mockService.Setup(x => x.GetById(personalId)).Returns(personal);
 
-        //    var resultNotFound = await _controller.DeletePersonal(PersonalId);
+            var resultNotFound = _controller.Delete(personalId);
 
-        //    Assert.IsType<NotFoundResult>(resultNotFound.Result);
-        //}
+            Assert.IsType<NotFoundObjectResult>(resultNotFound);
+        }
 
-        //[Theory]
-        //[InlineData(1)]
-        //public async void DeletePersonal_ActionExecute_ReturnNoContent(int PersonalId)
-        //{
-        //    var PersonalModel = personals.First(x => x.Id == PersonalId);
-        //    _mockService.Setup(x => x.GetById(PersonalId)).ReturnsAsync(Personal);
-        //    _mockService.Setup(x => x.Delete(Personal));
+        [Theory]
+        [InlineData("0224604c-0e43-4ca2-87bb-ca2955ae1907")]
+        public void DeletePersonal_ActionExecute_ReturnNoContent(Guid personalId)
+        {
+            var personal = personals.Select(x => new PersonalDetailModel
+            {
+                Id = x.Id,
+                Firm = x.Firm,
+                LastName = x.LastName,
+                Name = x.Name,
+            }).First(x => x.Id == personalId);
 
-        //    var noContentResult = await _controller.DeletePersonal(PersonalId);
+            _mockService.Setup(x => x.GetById(personalId)).Returns(personal);
+            _mockService.Setup(x => x.Delete(personalId));
 
-        //    _mockService.Verify(x => x.Delete(Personal), Times.Once);
+            var result = _controller.Delete(personalId);
 
-        //    Assert.IsType<NoContentResult>(noContentResult.Result);
-        //}
+            _mockService.Verify(x => x.Delete(personalId), Times.Once);
+
+            Assert.IsType<OkObjectResult>(result);
+        }
     }
 }

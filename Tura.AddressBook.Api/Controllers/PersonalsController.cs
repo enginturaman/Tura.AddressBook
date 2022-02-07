@@ -46,8 +46,8 @@ namespace Tura.AddressBook.Api.Controllers
         public async Task<IActionResult> Post([FromBody] PersonalModel model)
         {
             var result = await _personalService.Post(model);
-
-            return Ok(result);
+            var actionName = nameof(Get);
+            return CreatedAtAction(actionName,  result);
         }
 
         [HttpPut("{id}")]
@@ -64,10 +64,16 @@ namespace Tura.AddressBook.Api.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult Delete(Guid id)
-        {
-            _personalService.Delete(id);
+        {            
 
-            return Ok();
+            var deletedId =  _personalService.Delete(id);
+
+            if(deletedId == null)
+            {
+                return NotFound(deletedId);
+            }
+
+            return Ok(deletedId);
         }
     }
 }

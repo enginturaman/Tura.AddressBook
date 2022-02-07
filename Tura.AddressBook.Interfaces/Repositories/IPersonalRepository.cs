@@ -13,7 +13,7 @@ namespace Tura.AddressBook.Services.Interfaces.Repositories
         IEnumerable<PersonalDmo> Get();
         PersonalDmo GetById(Guid id);
         void Put(Guid id, PersonalModel model);
-        void Delete(Guid id);
+        Guid? Delete(Guid id);
     }
 }
 

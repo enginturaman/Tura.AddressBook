@@ -19,9 +19,9 @@ namespace Tura.AddressBook.Services
             _personalRepository = personalRepository;
         }
 
-        public void Delete(Guid id)
+        public Guid? Delete(Guid id)
         {
-            _personalRepository.Delete(id);
+            return _personalRepository.Delete(id);
         }
 
         public IEnumerable<PersonalModel> Get()

@@ -19,18 +19,20 @@ namespace Tura.AddressBook.Repositories
             _context = context;
         }
 
-        public void Delete(Guid id)
+        public Guid? Delete(Guid id)
         {
             var entity = _context.Personals.FirstOrDefault(x => x.Id == id && !x.Deleted);
 
             if (entity == null)
             {
-                throw new NotFoundException("Location record is not found", "RecordNotFound");
+                throw new NotFoundException("Personal record is not found", "RecordNotFound");
             }
 
             entity.Deleted = true;
 
             _context.SaveChanges();
+
+            return entity.Id;
         }
 
         public IEnumerable<PersonalDmo> Get()
@@ -52,7 +54,7 @@ namespace Tura.AddressBook.Repositories
 
             if (isExists)
             {
-                throw new FoundException("Kullanıcı bilgisi mevcut.");
+                throw new FoundException("Personal record is available");
             }
 
             await _context.Personals.AddAsync(entity);
@@ -68,7 +70,7 @@ namespace Tura.AddressBook.Repositories
 
             if (entity == null)
             {
-                throw new NotFoundException("Kullanıcı bilgisi mevcut degil", "RecordNotFound");
+                throw new NotFoundException("Personal record is not found", "RecordNotFound");
             }
 
             entity.Name = model.Name;
